@@ -1,6 +1,7 @@
 package com.example.sqlite;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -65,5 +66,29 @@ public class SQLiteMaDataBase extends SQLiteOpenHelper {
         Log.d("DataBase", "StrSql insert: " + strSql);
         getWritableDatabase().execSQL(strSql);
         Log.d("DataBase", "insertionClients, insertion OK");
+    }
+
+    public Cursor lireTable() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        //Je crée un Objet de type SQLiteDatabase
+        //lié aux context (donc MaDataBase) que j'ouvre en lecture.
+        Cursor monCurseur = db.rawQuery("select * from "+NOM_TABLE,null);
+
+        return monCurseur;
+        // on retourne ici la valeur de monCurseur meme si l''affichage ne se fais pas ici
+    }
+
+    public Cursor lireTable(String nom){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor monCurseur = db.rawQuery("select * from " +NOM_TABLE+ " WHERE NOM="+ nom , null);
+        return monCurseur;
+    }
+
+    public Cursor lireTable(int age){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor monCurseur = db.rawQuery("select * from "+NOM_TABLE + " WHERE AGE="+ age , null);
+        return monCurseur;
     }
 }
