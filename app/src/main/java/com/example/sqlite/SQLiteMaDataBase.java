@@ -50,4 +50,20 @@ public class SQLiteMaDataBase extends SQLiteOpenHelper {
         Log.d("DataBase", "Methode Upgrade Call: " + NOM_TABLE);
 
     }
+
+    public void insertionCLIENTS(String NOM, String PRENOM, Integer AGE) {
+        //pas ID il est en autoIncrement
+
+        NOM = NOM.replace("'", " ");
+        PRENOM = PRENOM.replace("'", " ");
+
+        //On ne peut pas avoir de simples cote dans une chaine de caracteres sql,
+        //Vu que l'on s'en sert dans la requete insert on remplace donc les eventuelles simple ' par un espace
+
+        String strSql = "INSERT INTO " + NOM_TABLE + "(" + COL1 + "," + COL2 + "," + COL3 + ")"
+                + "values ('" + NOM + "','" + PRENOM + "'," + AGE + ");";
+        Log.d("DataBase", "StrSql insert: " + strSql);
+        getWritableDatabase().execSQL(strSql);
+        Log.d("DataBase", "insertionClients, insertion OK");
+    }
 }
