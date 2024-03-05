@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 public class SQLiteMaDataBase extends SQLiteOpenHelper {
 
     public static final String BASE_NOM = "MaBase.db";
-    public static final int BASE_VERSION = 1;
+    public static final int BASE_VERSION = 3;
     public static final String NOM_TABLE = "T_clients";
     public static final String COL0 = "IdClient";
     public static final String COL1 = "NOM";
