@@ -8,11 +8,13 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
+import android.content.Intent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,6 +74,25 @@ public class MainActivity extends AppCompatActivity {
                 new String[] {"id","NOM","PRENOM","AGE"}, new int[] {R.id.id,R.id.nom,R.id.prenom,R.id.age});
 
         listViewPeople.setAdapter(monAdpter);
+
+
+        listViewPeople.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                HashMap<String, String> item = listItem.get(position);
+
+                Intent intent = new Intent(MainActivity.this, PersonDetailActivity.class);
+
+                intent.putExtra("id", item.get("id"));
+                intent.putExtra("nom", item.get("NOM"));
+                intent.putExtra("prenom", item.get("PRENOM"));
+                intent.putExtra("age", item.get("AGE"));
+
+                startActivity(intent);
+
+            }
+        });
 
 
 
