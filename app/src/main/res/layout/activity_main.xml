@@ -4,25 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".MainActivity">
 
-    <LinearLayout
+
+    <ListView
+        android:id="@+id/listViewPeople"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <EditText
-            android:id="@+id/SearchBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="text"
-            android:text="Name" />
-
-        <Button
-            android:id="@+id/search"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Button" />
-    </LinearLayout>
+        android:layout_height="match_parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

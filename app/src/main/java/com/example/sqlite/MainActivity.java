@@ -7,15 +7,24 @@ import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
     private StringBuffer monBuffer; //Je declare mon objet de type StringBuffer
 
-    private EditText SearchBar;
-    private Button search;
+   // private EditText SearchBar;
+   // private Button search;
+
+    private ListView listViewPeople;
+
 
 
     @Override
@@ -24,8 +33,112 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
+        listViewPeople = findViewById(R.id.listViewPeople);
+
+
+        ArrayList<HashMap<String,String>> listItem = new ArrayList<HashMap<String,String>>();
+
+        HashMap<String,String> map;
+
 
         SQLiteMaDataBase maSQLdb = new SQLiteMaDataBase(this);
+
+        Cursor cursor = maSQLdb.lireTable();
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+
+            map = new HashMap<String,String>();
+
+            map.put("id" , String.valueOf(cursor.getInt(0)));
+            map.put("NOM" , cursor.getString(1) );
+            map.put("PRENOM", cursor.getString(2));
+            map.put("AGE", String.valueOf(cursor.getInt(3)));
+
+
+            listItem.add(map);
+
+
+            cursor.moveToNext();
+        }
+
+        Log.d("base", "listItem: " + listItem);
+
+
+
+
+
+        SimpleAdapter monAdpter = new SimpleAdapter(this.getBaseContext(),listItem,R.layout.affichage_tableau,
+                new String[] {"id","NOM","PRENOM","AGE"}, new int[] {R.id.id,R.id.nom,R.id.prenom,R.id.age});
+
+        listViewPeople.setAdapter(monAdpter);
+
+
+
+
+
+
+
+
+
+
+
+
+
+       // search = findViewById(R.id.search);
+      //  SearchBar = findViewById(R.id.SearchBar);
+
+/*
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String searchTerm = SearchBar.getText().toString().trim();
+                Cursor cursor;
+                if (searchTerm.isEmpty()) cursor = maSQLdb.lireTable();
+                else {
+                    // Vérifiez si l'utilisateur a entré un nombre ou un prénom
+                    try {
+                        // Si l'utilisateur a entré un nombre, recherche par âge
+                        int age = Integer.parseInt(searchTerm);
+                        cursor = maSQLdb.lireTable(age);
+                    } catch (NumberFormatException e) {
+                        Log.d("catch", "passage catch " + searchTerm);
+                        // Si l'utilisateur n'a pas entré un nombre, recherche par Prénom / Nom
+                        cursor = maSQLdb.lireTable(searchTerm);
+                        Log.d("catch", "passage catch " + searchTerm);
+
+                    }
+
+
+            }
+
+                if (cursor.getCount() == 0) {
+                    // Si pas d'enregistrements, affichez un message
+                    Toast.makeText(MainActivity.this, "Aucune correspondance trouvée.", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Si des enregistrements sont trouvés, traitez les données
+                    monBuffer = new StringBuffer();
+                    cursor.moveToFirst();
+                    while (!cursor.isAfterLast()) {
+                        monBuffer.append("id:" + cursor.getInt(0) + "\n\r\r");
+                        monBuffer.append("NOM:" + cursor.getString(1) + "\n\r\r");
+                        monBuffer.append("PRENOM:" + cursor.getString(2) + "\n\r\r");
+                        monBuffer.append("AGE :" + cursor.getInt(3) + "\n");
+                        monBuffer.append("__________\n");
+                        cursor.moveToNext();
+                    }
+                    cursor.close();
+                    Log.d("Buffer", "monBuffer" + monBuffer);
+                    infoMaBase("Résultats de la recherche", monBuffer);
+                }
+
+
+            }
+
+
+
+        });   */
         /*
         maSQLdb.insertionCLIENTS("HANKS", "TOM", 19);
         maSQLdb.insertionCLIENTS("DEPP", "JOHNY", 50);
@@ -36,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
 
         maSQLdb.close(); //permet de fermer la base de données*/
 
-        Cursor monCurseur2 = maSQLdb.lireTable(45);
+        /*Cursor monCurseur2 = maSQLdb.lireTable(45);
 
         if (monCurseur2.getCount() == 0) {
             Toast.makeText(getApplicationContext(),"Il n'ya pas de données dans la table", Toast.LENGTH_LONG).show();
@@ -57,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
             Log.i("monBuffer", "monBuffer : " + monBuffer);
 
 
-        }
+        }  */
 
 
 
@@ -82,4 +195,30 @@ public class MainActivity extends AppCompatActivity {
         });
         aD.show();
     }
+
+    /*button.setOnClickListener(v) -> {
+        String strEditText = editText.getText().toString().trim();
+
+        if (strEditText.isEmpty()) monCurseur = maSQLdb.lireTable();
+        else {
+            try {
+                Integer.valueOf(strEditText);
+                monCurseur2 = maSQLdb.lireTable(Integer.valueOf(strEditText));
+            }catch (Exception e) {
+                monCurseur2 = maSQLdb.lireTable(strEditText);
+            }
+        }
+    }
+
+    if (monCurseur2.getCount() == 0) {
+
+        monBuffer = new StringBuffer();
+        monBuffer.append("la base ne contient pas cette recherche");
+        infoMaBase("Table: " + maSQLdb.NOM_TABLE, monBuffer);
+    }else {
+        monBuffer = new StringBuffer();
+        monCurseur2.moveToFirst();
+        while (!monCurseur2.isAfterLAst()) {
+
+    }*/
 }
